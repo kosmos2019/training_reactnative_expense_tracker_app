@@ -36,6 +36,36 @@ const DUMMY_EXPENSES = [
     amount: 17.79,
     date: new Date("2023-11-22"),
   },
+  {
+    id: "e6",
+    description: "A pair of shoes",
+    amount: 59.99,
+    date: new Date("2023-07-07"),
+  },
+  {
+    id: "e7",
+    description: "A pair of trousers",
+    amount: 89.59,
+    date: new Date("2023-09-17"),
+  },
+  {
+    id: "e8",
+    description: "Some bananas",
+    amount: 5.29,
+    date: new Date("2023-19-08"),
+  },
+  {
+    id: "e9",
+    description: "A book",
+    amount: 13.59,
+    date: new Date("2023-08-21"),
+  },
+  {
+    id: "e10",
+    description: "Another book",
+    amount: 17.79,
+    date: new Date("2023-11-22"),
+  },
 ];
 
 function ExpensesOutput({ expenses, expensesPeriod }) {
