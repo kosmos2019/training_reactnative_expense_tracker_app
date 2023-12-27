@@ -3,13 +3,16 @@ import { View, StyleSheet } from "react-native";
 
 import { GlobalStyles } from "../constants/styles";
 import IconButton from "../components/UI/IconButton";
-import Button from "../components/UI/Button";
 import { ExpensesContext } from "../store/expenses-context";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm.";
 
 function ManagerExpense({ route, navigation }) {
   const expensesCtx = useContext(ExpensesContext);
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
+  const selectedExpense = expensesCtx.expenses.find(
+    (expense) => expense.id === editedExpenseId
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -26,22 +29,13 @@ function ManagerExpense({ route, navigation }) {
     closeModal();
   }
 
-  function confirmExpenseHandler() {
-    const today = new Date();
-
+  function confirmExpenseHandler(expenseData) {
     if (isEditing) {
-      expensesCtx.updateExpense(editedExpenseId, {
-        description: "Text update!!!",
-        amount: 21.9,
-        date: new Date("2023-11-22"),
-      });
+      expensesCtx.updateExpense(editedExpenseId, expenseData);
     } else {
-      expensesCtx.addExpense({
-        description: "Text add!!!",
-        amount: 59.19,
-        date: new Date("2023-12-22"),
-      });
+      expensesCtx.addExpense(expenseData);
     }
+
     closeModal();
   }
 
@@ -51,18 +45,12 @@ function ManagerExpense({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button
-          mode="flat"
-          style={styles.button}
-          onPress={cancelExpenseHandler}
-        >
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={confirmExpenseHandler}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        defaultValues={selectedExpense}
+        onCancel={cancelExpenseHandler}
+        onSubmit={confirmExpenseHandler}
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+      />
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
@@ -84,15 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800,
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
   },
   deleteContainer: {
     marginTop: 16,
