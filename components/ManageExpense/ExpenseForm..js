@@ -54,7 +54,6 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
           },
         };
       });
-      return;
     }
 
     onSubmit(expenseData);
